@@ -1,0 +1,30 @@
+version: '2.0'
+
+services:
+    terraform:
+        build:
+          context: hetzner
+          args:
+            - VCS_REF="0.1"
+            - HTTP_PROXY=${HTTP_PROXY}
+            - HTTPS_PROXY=${HTTP_PROXY}
+            - NO_PROXY=${NO_PROXY}
+        entrypoint: make
+        command: 
+           - entrypoint.sh
+        volumes:
+            - ./terraform:/terraform
+            - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+#unable to make SSH_AGENT_SOCK work with Docker_for_Windows            
+            - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro 
+            - ~/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro 
+#            - ${SSH_AUTH_SOCK}:/ssh-agent.sock 
+        environment:
+            - HTTP_PROXY=${HTTP_PROXY}
+            - HTTPS_PROXY=${HTTP_PROXY}
+            - NO_PROXY=${NO_PROXY}
+#unable to make SSH_AGENT_SOCK work with Docker_for_Windows
+#            - SSH_AUTH_SOCK=/ssh-agent.sock 
+        env_file: .env
+        working_dir: /terraform
+       
