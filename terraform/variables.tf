@@ -37,3 +37,7 @@ variable "docker_version" {
 variable "rancher_version" {
   default = "v2.0.3-rc1"
 }
+
+variable "kite_password" {
+  default = "kite_password"
+}

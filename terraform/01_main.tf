@@ -49,5 +49,20 @@ resource "hcloud_server" "rancher-server" {
         "RANCHER_SERVER_ADDRESS=${hcloud_server.rancher-server.0.ipv4_address} RANCHER_PASSWORD=${var.rancher_password} RANCHER_KUBERNETES_VERSION=${var.rancher_kubernetes_version} RANCHER_CLUSTER_NAME=${var.rancher_cluster_name} bash /root/rancher_change_password.sh",
     ]
   }
+
+  provisioner "file" {
+    source      = "scripts/pagekite.sh"
+    destination = "/root/pagekite.sh"
+  }
+  provisioner "file" {
+    source      = "scripts/pagekiteDockerfile"
+    destination = "/root/pagekite/Dockerfile"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+        "KITE_PASSWORD=${var.kite_password} KITE_DOMAIN=${var.acme_domain}bash /root/pagekite.sh",
+    ]
+  }
 }
 

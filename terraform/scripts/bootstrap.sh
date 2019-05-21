@@ -1,7 +1,6 @@
 #!/bin/bash
 set -eu
 DOCKER_VERSION=${DOCKER_VERSION:-}
-KUBERNETES_VERSION=${KUBERNETES_VERSION:-}
 
 echo "
 Package: docker-ce
