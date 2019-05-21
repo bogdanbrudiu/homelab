@@ -21,6 +21,15 @@ resource "hcloud_server" "rancher-server" {
   }
 
   provisioner "file" {
+    source      = "scripts/cloudflare-ddns-update.sh"
+    destination = "/root/cloudflare-ddns-update.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = "CLOUDFLARE_AUTH_EMAIL=${var.cloudflare_auth_email} CLOUDFLARE_AUTH_KEY=${var.cloudflare_auth_key} CLOUDFLARE_DOMAIN=${var.acme_domain} bash /root/cloudflare-ddns-update.sh"
+  }
+
+  provisioner "file" {
     source      = "scripts/bootstrap.sh"
     destination = "/root/bootstrap.sh"
   }
@@ -46,7 +55,7 @@ resource "hcloud_server" "rancher-server" {
 
   provisioner "remote-exec" {
     inline = [
-        "RANCHER_SERVER_ADDRESS=${hcloud_server.rancher-server.0.ipv4_address} RANCHER_PASSWORD=${var.rancher_password} RANCHER_KUBERNETES_VERSION=${var.rancher_kubernetes_version} RANCHER_CLUSTER_NAME=${var.rancher_cluster_name} bash /root/rancher_change_password.sh",
+        "ACME_DOMAIN=${var.acme_domain} RANCHER_SERVER_ADDRESS=${hcloud_server.rancher-server.0.ipv4_address} RANCHER_PASSWORD=${var.rancher_password} RANCHER_KUBERNETES_VERSION=${var.rancher_kubernetes_version} RANCHER_CLUSTER_NAME=${var.rancher_cluster_name} bash /root/rancher_change_password.sh",
     ]
   }
 

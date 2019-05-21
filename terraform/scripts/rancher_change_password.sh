@@ -1,12 +1,12 @@
 #!/bin/bash
-RANCHER_SERVER_ADDRESS=${RANCHER_SERVER_ADDRESS}:8443
+RANCHER_SERVER_ADDRESS=${ACME_DOMAIN:-$RANCHER_SERVER_ADDRESS}:8443
 RANCHER_PASSWORD=${RANCHER_PASSWORD:-admin}
 RANCHER_CLUSTER_NAME=${RANCHER_CLUSTER_NAME:-playground}
 RANCHER_KUBERNETES_VERSION=${RANCHER_KUBERNETES_VERSION:-v1.10.1-rancher2-1}
 
 #credits https://gist.github.com/superseb/29af10c2de2a5e75ef816292ef3ae426
 
-while ! curl -k https://localhost/ping; do sleep 5; done
+while ! curl -k https://${RANCHER_SERVER_ADDRESS}/ping; do sleep 5; done
 
 while [ -z $LOGINTOKEN ];
 do

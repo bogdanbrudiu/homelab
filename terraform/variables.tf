@@ -41,3 +41,11 @@ variable "rancher_version" {
 variable "kite_password" {
   default = "kite_password"
 }
+
+variable "cloudflare_auth_email" {
+  default = "admin@example.com"
+}
+
+variable "cloudflare_auth_key" {
+  default = "cloudflarekey"
+}
