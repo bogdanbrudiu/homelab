@@ -1,7 +1,8 @@
 
 FROM hashicorp/terraform:light 
 
-COPY ./proxy.cer /usr/local/share/ca-certificates/proxy.cer
+COPY ./Dockerfile ./proxy.cer* /usr/local/share/ca-certificates/
+RUN rm /usr/local/share/ca-certificates/Dockerfile
 RUN update-ca-certificates
 
 
